@@ -22,11 +22,6 @@ public class FindAndReplace {
         return inputFile;
     }
 
-    public Map getFindReplaceValues() {
-        return findReplaceValues;
-    }
-
-
     public void launch() {
 
         createMapOfFindReplaceValues();
@@ -81,7 +76,7 @@ public class FindAndReplace {
         }
     }
 
-    public String replace(String everything) {
+    private String replace(String everything) {
 
         for (Map.Entry<String, String> entry : findReplaceValues.entrySet()) {
 
@@ -93,13 +88,14 @@ public class FindAndReplace {
     }
 
     public void createMapOfFindReplaceValues() {
-        String line = null;
+        String line;
         try (BufferedReader in = new BufferedReader(new FileReader(findReplaceFile))) {
             while (in.ready()) {
                 line = in.readLine();
-                String str[] = line.split(",");
-                for (int i = 0; i < str.length; i++) {
-                    String arr[] = str[i].split(":");
+                String[] str = line.split(",");
+                for (String s : str) {
+
+                    String[] arr = s.split(":");
                     findReplaceValues.put(arr[0], arr[1]);
                     System.out.println(arr[0] + " " + arr[1]);
                 }

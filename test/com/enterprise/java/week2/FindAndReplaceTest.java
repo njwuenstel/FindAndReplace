@@ -1,7 +1,11 @@
 package com.enterprise.java.week2;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import java.io.FileNotFoundException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -15,55 +19,68 @@ public class FindAndReplaceTest {
     String output = "test/testfiles/output.txt";
     String findAndReplace = "test/testfiles/findandreplace.txt";
 
+    FindAndReplace fnr;
 
     /*
      * Demonstrate use of @Before to set up the environment for EACH test case
      */
     @Before
-    public void setup() {}
+    public void setup() {
+
+        fnr = new FindAndReplace(input, output, findAndReplace);
+
+    }
 
    /*
-    *
+    * Test if fnr's inputFileProperty matches the 'input' class variable
     */
     @Test
     public void testConstructor() {
 
-        String inText = "xxx.txt";
-        FindAndReplace rw = new FindAndReplace(inText, output, findAndReplace);
-
-        System.out.println(rw.getInputFile());
-        assertEquals("Nah dog.", inText, rw.inputFile);
+        System.out.println(fnr.getInputFile());
+        assertEquals("Nah dog.", input, fnr.inputFile);
     }
 
     /*
-     *
+     * Get value from map using known key and compare to known value
+     * from the 'indandreplace.txt' file.
      */
     @Test
-    public void testInsertedItem() {
+    public void testFindReplaceValues() {
 
-        String inText = "input.txt";
-
-        FindAndReplace rw = new FindAndReplace(input, output, findAndReplace);
-        rw.createMapOfFindReplaceValues();
-
-        String val = rw.findReplaceValues.get("<<one>>");
-        //System.out.println(rw.findReplaceValues.get("<<one>>"));
+        fnr.createMapOfFindReplaceValues();
+        String val = fnr.findReplaceValues.get("<<one>>");
 
         assertEquals("Nah dog.", val, "zzz");
     }
 
     /*
- *
- */
+     * Compare first line of the readers 'input.txt' to
+     * the known value "<<one>>".
+     */
     @Test
     public void testReader() {
 
-        String inText = "input.txt";
+        String readText = fnr.reader();
+        String[] lines = readText.split(System.getProperty("line.separator"));
+        System.out.println(lines[0]);
 
-        FindAndReplace rw = new FindAndReplace(input, output, findAndReplace);
-        rw.reader();
+        assertEquals("Nah dog.", lines[0], "<<one>>");
+    }
 
-        assertEquals("Nah dog.","zzz" , "zzz");
+    /*
+     *
+     */
+    @Test(expected = FileNotFoundException.class)
+    public void testReaderException() {
+
+        String missingFile = "missingfile.txt";
+        fnr = new FindAndReplace(missingFile, output, findAndReplace);
+        fnr.reader();
     }
 
 }
+
+
+
+
