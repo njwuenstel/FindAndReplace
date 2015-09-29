@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -71,14 +72,14 @@ public class FindAndReplaceTest {
     /*
      *
      */
-    @Test(expected = FileNotFoundException.class)
+    @Test
     public void testReaderException() {
 
         String missingFile = "missingfile.txt";
         fnr = new FindAndReplace(missingFile, output, findAndReplace);
         fnr.reader();
-    }
 
+    }
 }
 
 
